@@ -24,12 +24,14 @@ class AnimatedCursorProvider extends ChangeNotifier {
 
   AnimatedCursorState state = AnimatedCursorState();
 
-  void changeCursor(){}
+  void changeCursor({required GlobalKey key,required BoxDecoration decoration}){}
 
   void resetCursor (){
-
+  state =  AnimatedCursorState();
   }
 
-  void updateCursorPosition (){}
+  void updateCursorPosition (Offset postion){
+    state = AnimatedCursorState(offset1: postion,offset2: postion);
+  }
 
 }
