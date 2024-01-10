@@ -1,4 +1,5 @@
 import 'package:cv/widgets/Buttons/gradient_button.dart';
+import 'package:cv/widgets/cursor/animated_circle_cursor.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -16,10 +17,12 @@ class HomePage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  height: 80,
-                  width: 80,
-                  child: Image.asset("assets/images/cv.jpeg"),
+                AnimatedCircleCursorMouseRegion(
+                  child: SizedBox(
+                    height: 80,
+                    width: 80,
+                    child: Image.asset("assets/images/personal.png"),
+                  ),
                 ),
                 Row(
                   children: [

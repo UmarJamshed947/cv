@@ -76,28 +76,75 @@ class AnimatedCircleCursor extends StatelessWidget {
                   ),
                 ),
                 Visibility(
-                    visible: state.offset1 !=Offset.zero,
-                    child: AnimatedPositioned(
-                      top: 0,
-                      left: 0,
-                      width: state.size1.width,
-                      height: state.size1.height,
-                      duration: Duration(milliseconds: 100),
-                      child: IgnorePointer(
-                        child: AnimatedContainer(
-                          duration: Duration(
-                            milliseconds: 300),
-                            curve: Curves.easeOutExpo,
-                            width: state.size1.width,
-                            height: state.size1.height,
-                    decoration: state.decoration ?? CursorConstants.boxDecorationOne,
-                          ),
+                  visible: state.offset1 != Offset.zero,
+                  child: AnimatedPositioned(
+                    top: state.offset1.dy - state.size1.height / 2,
+                    left: state.offset1.dx - state.size1.width / 2,
+                    width: state.size1.width,
+                    height: state.size1.height,
+                    duration: Duration(milliseconds: 100),
+                    child: IgnorePointer(
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeOutExpo,
+                        width: state.size1.width,
+                        height: state.size1.height,
+                        decoration: state.decoration ??
+                            CursorConstants.boxDecorationOne,
                       ),
+                    ),
+                  ),
+                ),
+                Visibility(
+                  visible: state.offset2 != Offset.zero,
+                  child: AnimatedPositioned(
+                    top: state.offset2.dy - state.size2.height / 2,
+                    left: state.offset2.dx - state.size2.width / 2,
+                    width: state.size2.width,
+                    height: state.size2.height,
+                    duration: Duration(milliseconds: 50),
+                    child: IgnorePointer(
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeOutExpo,
+                        width: state.size2.width,
+                        height: state.size2.height,
+                        decoration: state.decoration ??
+                            CursorConstants.boxDecorationTwo,
                       ),
-                    ))
+                    ),
+                  ),
+                ),
               ],
             );
           }),
     );
   }
 }
+
+class AnimatedCircleCursorMouseRegion extends StatefulWidget {
+  final Widget? child;
+
+  AnimatedCircleCursorMouseRegion ({super.key, this.child});
+
+  @override
+  State<AnimatedCircleCursorMouseRegion> createState() => _AnimatedCircleCursorMouseRegionState();
+}
+
+class _AnimatedCircleCursorMouseRegionState extends State<AnimatedCircleCursorMouseRegion> {
+
+  final GlobalKey _key = GlobalKey();
+
+  @override
+  Widget build(BuildContext context) {
+    final cubit = context.read<AnimatedCursorProvider> ();
+    return MouseRegion(
+      key: _key,
+      opaque: false,
+      onHover: (_) => cubit.changeCursor(key: _key, boxDecoration: CursorConstants.boxDecorationHovered),
+      onExit: (_) => cubit.resetCursor(),
+      child: widget.child,
+    );
+  }
+}
+

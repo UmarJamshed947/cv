@@ -13,5 +13,14 @@ class CursorConstants {
       borderRadius: BorderRadius.all(
         Radius.circular(90),
       ),
-      color: Colors.transparent);
+      color: Colors.transparent
+  );
+
+  static BoxDecoration boxDecorationTwo = BoxDecoration(
+      border: Border.all(color: Colors.red,width: 1),
+      borderRadius: BorderRadius.all(
+        Radius.circular(90),
+      ),
+      color: Colors.transparent
+  );
 }
