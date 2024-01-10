@@ -11,7 +11,7 @@ class GradientButtonContainer extends StatelessWidget {
   final Function() onpressed;
 
   GradientButtonContainer(
-      {required this.title,
+      {super.key, required this.title,
       required this.width,
       required this.height,
       required this.clr,
