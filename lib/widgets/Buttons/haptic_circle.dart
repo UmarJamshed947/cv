@@ -25,8 +25,8 @@ class _HapticCircleState extends State<HapticCircle> {
       },
       child: AnimatedContainer(
         duration: Duration(milliseconds: 100),
-        height: 40,
-        width: 40,
+        height: 50,
+        width: 50,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Color(0xffFF8324),
