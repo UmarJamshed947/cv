@@ -1,31 +1,37 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-class LineShape extends StatefulWidget {
+class RectangleShape extends StatefulWidget {
   final double? width;
   final double? height;
   final double? strokeWidth;
   final Color? lineColor;
   final StrokeCap? capStyle;
+  final StrokeJoin? strokeJoin;
+  final PaintingStyle? paintingStyle;
 
-  LineShape(
-      {this.width,
-      this.height,
-      this.strokeWidth,
-      this.lineColor,
-      this.capStyle});
+  RectangleShape(
+      { this.width,
+        this.height,
+        this.strokeWidth,
+        this.lineColor,
+        this.capStyle,
+        this.strokeJoin,
+        this.paintingStyle
+      });
 
   @override
-  State<LineShape> createState() => _LineShapeState();
+  State<RectangleShape> createState() => _RectangleShapeState();
 }
 
-class _LineShapeState extends State<LineShape>
+class _RectangleShapeState extends State<RectangleShape>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
 
   @override
   void initState() {
+    super.initState();
     controller = AnimationController(
       vsync: this,
       reverseDuration: Duration(seconds: 10),
@@ -52,33 +58,50 @@ class _LineShapeState extends State<LineShape>
       animation: animation,
       builder: (context, child) {
         return Transform.rotate(
-            angle: animation.value,
-            child: Container(
-              height: widget.height,
-              width: widget.width,
-              child: CustomPaint(painter: LinePainter(capStyle: widget.capStyle,strokeWidth: widget.strokeWidth,lineColor: widget.lineColor)),
-            ));
+          angle: animation.value,
+                 child: Container(
+            width: widget.width ?? 100,
+            height: widget.height ?? 100,
+            child: CustomPaint(
+              painter: RectanglePainter(
+                width: widget.width,
+                height: widget.height,
+                capStyle: widget.capStyle,
+                lineColor: widget.lineColor,
+                strokeWidth: widget.strokeWidth,
+              ),
+            ),
+          ),
+        );
       },
     );
   }
 }
 
-class LinePainter extends CustomPainter {
+class RectanglePainter extends CustomPainter {
+  final double? width;
+  final double? height;
   final double? strokeWidth;
   final Color? lineColor;
   final StrokeCap? capStyle;
 
-  LinePainter({this.capStyle, this.lineColor, this.strokeWidth});
+  RectanglePainter({
+    this.width,
+    this.height,
+    this.strokeWidth,
+    this.lineColor,
+    this.capStyle,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
       ..strokeWidth = strokeWidth ?? 10
       ..color = lineColor ?? Colors.red
-      ..strokeCap = StrokeCap.round;
+      ..style = PaintingStyle.stroke;  // Use stroke style for rectangle outline
 
-    canvas.drawLine(Offset(size.width / 100, size.height * 1 / 2),
-        Offset(size.width, size.height * 1 / 2), paint);
+    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    canvas.drawRect(rect, paint);
   }
 
   @override
@@ -86,9 +109,3 @@ class LinePainter extends CustomPainter {
     return true;
   }
 }
-
-
-
-
-
-

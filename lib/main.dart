@@ -1,10 +1,15 @@
+import 'package:cv/provider/tab_data_provider.dart';
 import 'package:cv/views/homepage.dart';
 import 'package:cv/widgets/cursor/animated_circle_cursor.dart';
 import 'package:flutter/material.dart';
-// Import your HomePage class
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MultiProvider(providers: [
+    ChangeNotifierProvider(
+      create: (context) => TabDataProvider(),
+    )
+  ], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {

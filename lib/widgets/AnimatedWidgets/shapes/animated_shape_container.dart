@@ -39,8 +39,8 @@ class _AnimatedShapeContainerState extends State<AnimatedShapeContainer>
           return Transform.rotate(
             angle: animation.value,
             child: Container(
-              height: 400,
-              width: 250,
+              height: 300,
+              width: 190,
               color: Color(0xffFFB324),
             ),
           );

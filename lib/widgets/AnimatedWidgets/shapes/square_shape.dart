@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-class LineShape extends StatefulWidget {
+class SquareShape extends StatefulWidget {
   final double? width;
   final double? height;
   final double? strokeWidth;
   final Color? lineColor;
-  final StrokeCap? capStyle;
 
-  LineShape(
+  SquareShape(
       {this.width,
-      this.height,
-      this.strokeWidth,
-      this.lineColor,
-      this.capStyle});
+        this.height,
+        this.strokeWidth,
+        this.lineColor});
 
   @override
-  State<LineShape> createState() => _LineShapeState();
+  State<SquareShape> createState() => _SquareShapeState();
 }
 
-class _LineShapeState extends State<LineShape>
+class _SquareShapeState extends State<SquareShape>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation<double> animation;
@@ -52,33 +50,48 @@ class _LineShapeState extends State<LineShape>
       animation: animation,
       builder: (context, child) {
         return Transform.rotate(
-            angle: animation.value,
-            child: Container(
-              height: widget.height,
-              width: widget.width,
-              child: CustomPaint(painter: LinePainter(capStyle: widget.capStyle,strokeWidth: widget.strokeWidth,lineColor: widget.lineColor)),
-            ));
+          angle: animation.value,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            height: widget.height,
+            width: widget.width,
+            child: CustomPaint(
+              painter: SquarePainter(
+                strokeWidth: widget.strokeWidth,
+                lineColor: widget.lineColor,
+              ),
+            ),
+          ),
+        );
       },
     );
   }
 }
 
-class LinePainter extends CustomPainter {
+class SquarePainter extends CustomPainter {
   final double? strokeWidth;
   final Color? lineColor;
-  final StrokeCap? capStyle;
 
-  LinePainter({this.capStyle, this.lineColor, this.strokeWidth});
+  SquarePainter({this.lineColor, this.strokeWidth});
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..strokeWidth = strokeWidth ?? 10
+      ..strokeWidth = strokeWidth ?? 4
       ..color = lineColor ?? Colors.red
-      ..strokeCap = StrokeCap.round;
+      ..style = PaintingStyle.stroke;  // Change to stroke style to draw the outline of the square
 
-    canvas.drawLine(Offset(size.width / 100, size.height * 1 / 2),
-        Offset(size.width, size.height * 1 / 2), paint);
+    final path = Path();
+
+    // Scale factor to reduce the size of the square
+    final scale = 0.2;
+    final offsetX = size.width * (1 - scale) / 2;
+    final offsetY = size.height * (1 - scale) / 2;
+
+    // Move and draw the scaled square
+    path.addRect(Rect.fromLTWH(offsetX, offsetY, size.width * scale, size.height * scale));
+
+    canvas.drawPath(path, paint);
   }
 
   @override
@@ -86,9 +99,3 @@ class LinePainter extends CustomPainter {
     return true;
   }
 }
-
-
-
-
-
-

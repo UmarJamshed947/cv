@@ -38,6 +38,7 @@ class _HapticCircleState extends State<HapticCircle> {
           padding: EdgeInsets.only(left: 0.5),
           child: Icon(FontAwesomeIcons.play,
             color: Colors.white,
+            size: 15,
           ),
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:cv/widgets/cursor/animated_circle_cursor.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -25,6 +26,7 @@ class AnimatedTextboxSlider extends StatefulWidget {
 
 class _AnimatedTextboxSliderState extends State<AnimatedTextboxSlider> {
   bool showText = false;
+  bool prevSelected = false;
 
   double adjustWidth() {
     if (showText) {
@@ -43,8 +45,19 @@ class _AnimatedTextboxSliderState extends State<AnimatedTextboxSlider> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.tabData != widget.title && prevSelected == true){
+      setState(() {
+        showText = false;
+        prevSelected = false;
+      });
+    }
     return GestureDetector(
-      onTap: widget.onpressed,
+      onTap: (){
+        widget.onpressed();
+        setState(() {
+          prevSelected = true;
+        });
+      },
       child: MouseRegion(
         onEnter: (event) {
           setState(() {
@@ -52,56 +65,62 @@ class _AnimatedTextboxSliderState extends State<AnimatedTextboxSlider> {
           });
         },
         onExit: (event) {
-          setState(() {
-            showText = false;
-          });
-        },
+          if(widget.tabData !=widget.title){
+    setState(() {
+    showText = false;
+    });
+
+          }
+
+          },
+
         child: Padding(
-          padding: EdgeInsets.only(right: 10),
-          child: AnimatedContainer(
-            duration: Duration(milliseconds: 100),
-            child: Container(
-              height: 80,
-              width: adjustWidth(),
-              decoration: BoxDecoration(
-                  color: widget.tabData == widget.title
-                      ? Color(0xffff451b)
-                      : Colors.white,
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                        color: Colors.black.withOpacity(0.01),
-                        spreadRadius: 10,
-                        blurRadius: 20),
-                  ]),
-              child: Center(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: Icon(
-                          widget.icon,
-                          size: 30,
-                          color: widget.tabData == widget.title
-                              ? Colors.white
-                              : widget.color,
+          padding: EdgeInsets.only(right: 5),
+          child: AnimatedCircleCursorMouseRegion(
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 100),
+              child: Container(
+                height: 80,
+                width: adjustWidth(),
+                decoration: BoxDecoration(
+                    color: widget.tabData == widget.title
+                        ? Color(0xffff451b)
+                        : Colors.white,
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.black.withOpacity(0.01),
+                          spreadRadius: 10,
+                          blurRadius: 20),
+                    ]),
+                child: Center(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.center,
+                          child: Icon(
+                            widget.icon,
+                            size: 30,
+                            color: widget.tabData == widget.title
+                                ? Colors.white
+                                : widget.color,
+                          ),
                         ),
-                      ),
-                      showText ? SizedBox(width: 30) : Container(),
-                      showText
-                          ? Poppins(
-                              text: widget.title,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                              color: Colors.black)
-                          : Container(),
-                    ],
+                        showText ? SizedBox(width: 20) : Container(),
+                        showText
+                            ? Poppins(
+                                text: widget.title,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 14,
+                                color: widget.tabData == widget.title ? Colors.white : Colors.black) : Container(),
+                      ],
+                    ),
                   ),
                 ),
               ),
